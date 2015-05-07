@@ -132,7 +132,7 @@ Reset admin password
 drush upwd admin --password="password"
 ```
 
-## Even More Handy Commands
+## Even More Commands
 
 List all enabled contrib modules:
 
