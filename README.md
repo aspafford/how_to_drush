@@ -19,32 +19,38 @@ mv composer.phar /usr/local/bin/composer
 composer global require drush/drush:dev-master
 ```
 
-Add 'drush' to your system PATH (~/.bash_profile):
+Add drush executable to your system PATH (~/.bash_profile):
 ```shell
 export PATH="$HOME/.composer/vendor/bin:$PATH"
 ```
 
 ## Use Drush to Download and Install Drupal
 
+To install a new drupal site, we'll simply create a new directory then copy our make file inside and run [drush make](http://www.drush.org/en/master/make/) to download the codebase. The make file can pull any version drupal and any contrib modules we may need:
+
 ```shell
 drush make drush.make.yml
 ```
 
-and now let's install the site with drush
+Once we have the codebase we can set up the database using [sql-create](http://www.drushcommands.com/drush-7x/sql/sql-create):
 
-[first create the database ...]
+```shell
+drush sql-create --db-url=mysql://{user}:{pass}@localhost/{database}
+```
+
+and now we can run [site-install](http://www.drushcommands.com/drush-7x/site-install/site-install) to complete the installation:
 
 ```shell
 drush site-install standard --account-name=admin --account-pass=admin --db-url=mysql://{user}:{pass}@localhost/{database}
 ```
 
-[... and here's where we'd configure dns, restart apache, etc.]
+(here's where we'd configure apache virtual hosts to point to our site ...)
 
 We should now be able to access our freshly installed drupal site and login as 'admin'.
 
 ## Manage Multiple Sites with Aliases
 
-Create file 'aliases.drush.php' at ~/.drush
+Copy file 'aliases.drush.php' to ~/.drush directory
 
 ```php
 $aliases['dev'] = array(
