@@ -6,7 +6,7 @@ $aliases['dev'] = array(
 );
 
 $aliases['live'] = array(
-  'root' => '/var/www/html/drush_example',
+  'root' => '/var/www/html/drush-live',
   'uri' => 'drush.local',
 );
 

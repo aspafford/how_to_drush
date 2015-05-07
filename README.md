@@ -26,7 +26,7 @@ export PATH="$HOME/.composer/vendor/bin:$PATH"
 
 ## Use Drush to Download and Install Drupal
 
-To install a new drupal site, we'll simply create a new directory then copy our make file inside and run [drush make](http://www.drush.org/en/master/make/) to download the codebase. The make file can pull any version drupal and any contrib modules we may need:
+To install a new drupal site, we'll simply create a new directory, grab our make file and run [drush make](http://www.drush.org/en/master/make/) to download the codebase. The make file can pull any version drupal along with any contrib modules we may need:
 
 ```shell
 drush make drush.make.yml
@@ -50,6 +50,8 @@ We should now be able to access our freshly installed drupal site and login as '
 
 ## Manage Multiple Sites with Aliases
 
+Using site [aliases](http://drush.readthedocs.org/en/master/shellaliases/) we can easily run drush on any drupal installation running on any server.
+
 Copy file 'aliases.drush.php' to ~/.drush directory
 
 ```php
@@ -65,7 +67,7 @@ Now we can target our dev instance from anywhere on the host machine:
 drush @dev status
 ```
 
-See a list of all available drush aliases:
+See a list of all available drush site aliases:
 
 ```shell
 drush sa
@@ -73,13 +75,85 @@ drush sa
 
 ## Syncing Live and Dev Sites
 
-Now that we have aliases set up, we can sync data between multiple instances. For example, we can grab content from the live site and update our dev instance like this:
+Now that we have aliases set up, we can sync content and configuration changes between multiple instances.
+
+For example, we can run [sql-sync](http://www.drushcommands.com/drush-6x/sql/sql-sync) to clone the live database to dev:
 
 ```shell
 drush sql-sync @live @dev
 ```
 
+Similarly we can copy any file uploads using the [rsync](http://www.drushcommands.com/drush-7x/core/core-rsync) command:
 
+```shell
+drush rsync @live:%files @dev:%files
+```
 
+## Everyday Commands
 
+Clear all the caches!
 
+```shell
+# drupal 7
+drush cc all
+
+# drupal 8
+drush cache-rebuild
+```
+
+Manage contrib modules:
+
+```shell
+# download
+drush dl {module}
+
+#enable
+drush en {module}
+
+#disable
+drush dis {module}
+```
+
+Update core and all contrib modules:
+
+```shell
+drush pm-update
+```
+
+Login as another user
+
+```shell
+drush user-login {username}
+```
+
+Reset admin password
+
+```shell
+drush upwd admin --password="password"
+```
+
+## Even More Handy Commands
+
+List all enabled contrib modules:
+
+```shell
+drush pm-list --pipe --type=module --status=enabled --no-core
+```
+
+Run cron:
+
+```shell
+drush core-cron
+```
+
+Flush imagecache:
+
+```shell
+drush image-flush {image-style-id}
+```	
+
+View documentation:
+
+```shell
+drush topic
+```
