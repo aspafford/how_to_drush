@@ -4,3 +4,5 @@ api: 2
 projects:
   drupal:
     version: ~
+  devel:
+    version: 1.x-dev
